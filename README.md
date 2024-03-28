@@ -5,7 +5,7 @@ https://docs.google.com/document/d/1vqd_3zjfqLjgvGmoXI1PHkvz4nSRgTyVXLWKYY_c1JA/
 ## Task Layout 
 https://docs.google.com/spreadsheets/d/1F6Dr-F2L-dRaMlC-iId6YemPMQmcomMLaz-fPx3V1fI/edit?usp=sharing
 
-## Video for API fetching 
+## Video for API fetching (Spotify)
 https://www.youtube.com/watch?v=WAmEZBEeNmg
 
 ## Youtube fetching 
