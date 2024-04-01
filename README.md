@@ -5,8 +5,30 @@ https://docs.google.com/document/d/1vqd_3zjfqLjgvGmoXI1PHkvz4nSRgTyVXLWKYY_c1JA/
 ## Video for API fetching (Spotify)
 https://www.youtube.com/watch?v=WAmEZBEeNmg
 
+``` Pakcage you might need to install
+python -m pip install python-dotenv 
+1. You need to create a .env file in the root directory
+2. Add the following lines in the .env file
+CLIENT_ID= 'Your Spotify Client ID'
+CLIENT_SECRET= 'Your Spotify Client Secret'
+3. Save the file
+4. Run the code by doing python import_spotify.py
+```
+
 ## API Youtube fetching 
 https://ytmusicapi.readthedocs.io/en/stable/index.html
+
+How to make sure you have installed ytmusicapi 
+``` 
+python -m pip install ytmusicapi
+```
+```python
+or install all the requirements 
+```
+pip install -r requirements.txt 
+```
+
+```python
 
 ## API Spotify fetching
 https://engineering.atspotify.com/2015/03/understanding-spotify-web-api/#:~:text=You%20can%20make%20similar%20calls,that%20it's%20free%20to%20access.
