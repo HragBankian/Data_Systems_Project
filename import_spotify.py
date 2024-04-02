@@ -47,7 +47,7 @@ def get_podcasts(token, query):
         "q": query,
         "type": "show",
         "market": "US",
-        "limit": 10  # Limiting to 10 results for demonstration purposes
+        "limit": 10  
     }
     result = get(url, headers=headers, params=params)
     json_result = json.loads(result.content)
@@ -58,4 +58,10 @@ token = get_token()
 # music_tracks = get_music_tracks(token, "pop music")
 # print(music_tracks)
 podcasts = get_podcasts(token, "tech podcasts")
-print(podcasts)
+for item in podcasts["shows"]["items"]:
+    print(f"name: {item['name']}")
+    print(f"publisher: {item['publisher']}")
+    print(f"description: {item['description'][:255]}")
+    print(f"total_episodes: {item['total_episodes']}")
+    print(f"available_markets: {item['available_markets']}")
+    print("\n\n")

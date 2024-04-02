@@ -4,12 +4,6 @@ from ytmusicapi import YTMusic
 import os
 ytmusic = YTMusic("oauth.json")
 
-# Function to insert data into SQL table
-def insert_into_sql_table(cursor, title, artist):
-    insert_query = "INSERT INTO YourTable (Title, Artist) VALUES (?, ?)"
-    cursor.execute(insert_query, title, artist)
-    cursor.commit()
-
 #Assuming you want to search for "Self Help" Podcasts
 def search_podcasts(query):
     search_results = ytmusic.search(query,filter="podcasts")
@@ -23,6 +17,13 @@ def search_songs(query):
 # Initialize YTMusic object
 ytmusic = YTMusic("oauth.json")
 
-# Perform search
-search_results = ytmusic.search("Oasis Wonderwall", filter="songs")
-print(search_results)
+podcast_results = ytmusic.search("Gwen Stefani", filter="songs")
+# print(podcast_results)
+for result in podcast_results:
+    print(f"title : {result['title']}")
+    print(f"artists: {result['artists'][0]['name']}")
+    print(f"album: {result['album']['name']}")
+    print(f"duration: {result['duration_seconds']}")
+    print ("\n\n")
+
+
