@@ -43,9 +43,9 @@ CREATE TRIGGER songs_before_insert_trigger
 BEFORE INSERT ON songs
 FOR EACH ROW
 BEGIN
-    DECLARE media_type_value ENUM('MUSIC_VIDEO_TYPE_ATV', 'show');
-    SELECT media_type INTO media_type_value FROM media_types WHERE media_id = NEW.media_type_id;
-    
+    DECLARE media_type_value VARCHAR(255);
+    SELECT media_type INTO media_type_value FROM media_types WHERE media_id = NEW.song_id; -- Corrected to use NEW.song_id instead of NEW.media_id
+
     IF media_type_value IS NULL THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Invalid media_type_id for songs';
@@ -59,9 +59,9 @@ CREATE TRIGGER podcasts_before_insert_trigger
 BEFORE INSERT ON podcasts
 FOR EACH ROW
 BEGIN
-    DECLARE media_type_value ENUM('MUSIC_VIDEO_TYPE_ATV', 'show');
-    SELECT media_type INTO media_type_value FROM media_types WHERE media_id = NEW.media_type_id;
-    
+    DECLARE media_type_value VARCHAR(255);
+    SELECT media_type INTO media_type_value FROM media_types WHERE media_id = NEW.podcast_id; -- Corrected to use NEW.podcast_id instead of NEW.media_id
+
     IF media_type_value IS NULL THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Invalid media_type_id for podcasts';
@@ -70,7 +70,7 @@ END//
 DELIMITER ;
 
 #view to display all media items
-CREATE VIEW all_media AS
+CREATE OR REPLACE VIEW all_media AS
 SELECT
     song_id AS media_id,
     song_name AS media_title,
@@ -84,3 +84,4 @@ SELECT
     'podcast' AS media_type
 FROM
     podcasts;
+    
