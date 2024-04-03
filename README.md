@@ -22,10 +22,11 @@ How to make sure you have installed ytmusicapi
 ``` 
 python -m pip install ytmusicapi
 ```
+
 ```python
-or install all the requirements 
-```
-pip install -r requirements.txt 
+
+Also need to run ytmusicapi oauth in terminal to connect to google account
+
 ```
 
 ```python
