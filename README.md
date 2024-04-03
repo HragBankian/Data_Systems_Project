@@ -40,3 +40,7 @@ https://lucid.app/lucidchart/48f9dfe1-8766-4ded-8a21-bfa6a82363a8/edit?viewport_
 ## Task Layout 
 (Not part of project)
 https://docs.google.com/spreadsheets/d/1F6Dr-F2L-dRaMlC-iId6YemPMQmcomMLaz-fPx3V1fI/edit?usp=sharing
+
+## Database must add the following 
+INSERT INTO media_types VALUES (1,'MUSIC_VIDEO_TYPE_ATV');
+INSERT INTO media_types VALUES (2,'show');
