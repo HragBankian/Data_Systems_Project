@@ -246,7 +246,35 @@ create view db_perfect_length as
 
 
 
+# finds songs that an artist contributed with other artists
+SELECT DISTINCT b.song_name
+FROM songs b
+WHERE NOT EXISTS (
+    SELECT album
+    FROM songs a
+    WHERE a.artist_name = 'Coldplay'
+      AND a.album NOT IN (
+          SELECT album
+          FROM songs c
+          WHERE c.song_id = b.song_id
+      )
+);
 
+
+
+SELECT DISTINCT b.song_name
+FROM songs b
+WHERE NOT EXISTS (
+    SELECT album
+    FROM songs a
+    WHERE a.artist_name = 'Coldplay'
+      AND NOT EXISTS (
+          SELECT album
+          FROM songs c
+          WHERE c.song_id = b.song_id
+            AND c.album = a.album
+      )
+);
 
 
 
