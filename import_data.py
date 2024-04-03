@@ -6,7 +6,7 @@ import json
 import mysql.connector
 import pyodbc
 from ytmusicapi import YTMusic
-
+#yeah its doing something now 
 # Database configuration
 DB_HOST = 'XYZ'
 DB_USER = 'XYZ'
@@ -250,7 +250,7 @@ artists = [
     "Paramore", "The Strokes", "Lil Uzi Vert", "Jimi Hendrix", 
     "Frank Ocean", "Daft Punk", "The Who", "AC/DC", "Dr. Dre"
 ]
-
+# its done :)
 # Loop through each artist
 for artist in artists:
     # Searching for songs by the artist
@@ -258,6 +258,8 @@ for artist in artists:
 
     # Inserting the data into the database
     for result in podcast_results:
+        if result is None:
+            break
         cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ("song",))
         cursor.execute("INSERT INTO songs (song_id,song_name, artist_name, album, duration) VALUES (%s,%s, %s, %s, %s)", (count,result['title'], result['artists'][0]['name'], result['album']['name'], result['duration_seconds']))
         count += 1
