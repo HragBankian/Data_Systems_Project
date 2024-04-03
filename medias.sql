@@ -1,38 +1,41 @@
+use sys;
+
 #parent table
 CREATE TABLE media_types (
     media_id INT AUTO_INCREMENT PRIMARY KEY,
-    media_type ENUM('MUSIC_VIDEO_TYPE_ATV', 'show') NOT NULL #a media can only be of type 'MUSIC_VIDEO_TYPE_ATV' (song) or 'show' (podcast)
+    media_type VARCHAR(255) NOT NULL #a media can only be of type 'MUSIC_VIDEO_TYPE_ATV' (song) or 'show' (podcast)
 );
 
 #child table: 'songs' ISA 'media_types'
 CREATE TABLE songs (
-    song_id INT AUTO_INCREMENT PRIMARY KEY,
+    song_id INT,
     song_name VARCHAR(255) NOT NULL,
     artist_name VARCHAR(255) NOT NULL,
     album VARCHAR(255),
     duration INT,
-    media_type_id INT,
-    CONSTRAINT fk_media_type_id_songs FOREIGN KEY (media_type_id) REFERENCES media_types(media_id)
+    FOREIGN KEY (song_id) REFERENCES media_types(media_id)
 );
 
 #child table: 'podcasts' ISA 'media_types'
 CREATE TABLE podcasts (
-    podcast_id INT AUTO_INCREMENT PRIMARY KEY,
+    podcast_id INT,
     podcast_name VARCHAR(255) NOT NULL,
     publisher VARCHAR(255),
     overview VARCHAR(255),
     total_episodes INT,
-    media_type_id INT,
-    CONSTRAINT fk_media_type_id_podcasts FOREIGN KEY (media_type_id) REFERENCES media_types(media_id)
+	FOREIGN KEY (podcast_id) REFERENCES media_types(media_id)
 );
 
 #weak entity of 'podcasts'
 CREATE TABLE available_markets (
-    market_id INT AUTO_INCREMENT PRIMARY KEY,
-    market_name VARCHAR(255) NOT NULL,
     podcast_id INT,
-    CONSTRAINT fk_podcast_id_available_markets FOREIGN KEY (podcast_id) REFERENCES podcasts(podcast_id)
+    market_name VARCHAR(255) NOT NULL,
+    PRIMARY KEY (podcast_id, market_name),
+    CONSTRAINT fk_podcast_id_available_markets 
+        FOREIGN KEY (podcast_id) 
+        REFERENCES podcasts(podcast_id)
 );
+
 
 #referential integrity using triggers for 'songs' table
 DELIMITER //

@@ -8,11 +8,10 @@ import pyodbc
 from ytmusicapi import YTMusic
 
 # Database configuration
-
-DB_HOST = '127.0.0.1'
-DB_USER = 'root'
-DB_PASSWORD = 'mysql123%'
-DB_DATABASE = 'sys'
+DB_HOST = 'XYZ'
+DB_USER = 'XYZ'
+DB_PASSWORD = 'XYZ'
+DB_DATABASE = 'XYZ'
 # Establish database connection
 conn = mysql.connector.connect(
     host=DB_HOST,
@@ -188,7 +187,8 @@ podcast_topics = [
     "The history of major epidemics and pandemics",
     "The future of transportation technology"
 ]
-
+# podcasts = get_podcasts(token, podcast_topics[0])
+# print(podcasts["shows"]["items"][0]['available_markets'][0])
 
 # Loop through each artist
 count = 1 
@@ -198,10 +198,10 @@ for topic in podcast_topics:
 
     # Inserting the data into the database
     for result in podcasts["shows"]["items"]:
-        cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ('podcast'))
-        cursor.execute("INSERT INTO podcasts (podcast_id, podcast_name, publisher, overview, total_episodes, media_type_id) VALUES (%s, %s, %s, %s, %s,  %s)", (count, result['name'][:255], result['publisher'][:255], result['description'][:255], result['total_episodes'],2))
-        for i in result['available_markets']:
-            cursor.execute("INSERT INTO available_markets (podcast_id, market_name) VALUES (%s,%s)", (count, result['available_markets'][i]))
+        cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ('podcast',))
+        cursor.execute("INSERT INTO podcasts (podcast_id, podcast_name, publisher, overview, total_episodes) VALUES (%s, %s, %s, %s, %s)", (count, result['name'][:255], result['publisher'][:255], result['description'][:255], result['total_episodes']))
+        for i in result['available_markets'] :
+            cursor.execute("INSERT INTO available_markets (podcast_id, market_name) VALUES (%s,%s)", (count, i))
         count += 1
         conn.commit()
 
@@ -258,8 +258,8 @@ for artist in artists:
 
     # Inserting the data into the database
     for result in podcast_results:
-        cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ("song"))
-        cursor.execute("INSERT INTO songs (song_id,song_name, artist_name, album, duration, media_type_id) VALUES (%s,%s, %s, %s, %s, %s)", (count,result['title'], result['artists'][0]['name'], result['album']['name'], result['duration_seconds'], 1))
+        cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ("song",))
+        cursor.execute("INSERT INTO songs (song_id,song_name, artist_name, album, duration) VALUES (%s,%s, %s, %s, %s)", (count,result['title'], result['artists'][0]['name'], result['album']['name'], result['duration_seconds']))
         count += 1
         conn.commit()
 
