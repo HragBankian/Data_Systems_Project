@@ -4,7 +4,6 @@ import base64
 from requests import post,get
 import json
 import mysql.connector
-import pyodbc
 from ytmusicapi import YTMusic
 
 # Database configuration
