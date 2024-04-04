@@ -7,10 +7,10 @@ import mysql.connector
 from ytmusicapi import YTMusic
 
 # Database configuration
-DB_HOST = 'XYZ'
-DB_USER = 'XYZ'
-DB_PASSWORD = 'XYZ'
-DB_DATABASE = 'XYZ'
+DB_HOST = '127.0.0.1'
+DB_USER = 'root'
+DB_PASSWORD = 'mhbank12'
+DB_DATABASE = 'medias'
 # Establish database connection
 conn = mysql.connector.connect(
     host=DB_HOST,
@@ -186,15 +186,12 @@ podcast_topics = [
     "The history of major epidemics and pandemics",
     "The future of transportation technology"
 ]
-# podcasts = get_podcasts(token, podcast_topics[0])
-# print(podcasts["shows"]["items"][0]['available_markets'][0])
 
 # Loop through each artist
 count = 1 
 for topic in podcast_topics:
     # Searching for songs by the artist
     podcasts = get_podcasts(token, topic)
-
     # Inserting the data into the database
     for result in podcasts["shows"]["items"]:
         cursor.execute("INSERT INTO media_types (media_type) VALUES (%s)", ('podcast',))
@@ -207,17 +204,13 @@ for topic in podcast_topics:
 # Fetching the data from the database
 cursor.execute("SELECT * FROM podcasts")
 result = cursor.fetchall()
-for row in result:
-    print(row)
 
 ytmusic = YTMusic("oauth.json")
 
-#Assuming you want to search for "Self Help" Podcasts
 def search_podcasts(query):
     search_results = ytmusic.search(query,filter="podcasts")
     return search_results
 
-#Assuming you want to search songs by "Taylor Swift"
 def search_songs(query):
     search_results = ytmusic.search(query,filter="songs")
     return search_results
@@ -249,7 +242,7 @@ artists = [
     "Paramore", "The Strokes", "Lil Uzi Vert", "Jimi Hendrix", 
     "Frank Ocean", "Daft Punk", "The Who", "AC/DC", "Dr. Dre"
 ]
-# its done :)
+
 # Loop through each artist
 for artist in artists:
     # Searching for songs by the artist
@@ -267,9 +260,8 @@ for artist in artists:
 # Fetching the data from the database
 cursor.execute("SELECT * FROM songs")
 result = cursor.fetchall()
-for row in result:
-    print(row)
-
 
 # Closing the connection
 cursor.close()
+
+print("Data inserted successfully!")
