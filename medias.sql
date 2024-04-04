@@ -3,7 +3,7 @@ use sys;
 #parent table
 CREATE TABLE media_types (
     media_id INT AUTO_INCREMENT PRIMARY KEY,
-    media_type VARCHAR(255) NOT NULL #a media can only be of type 'MUSIC_VIDEO_TYPE_ATV' (song) or 'show' (podcast)
+    media_type VARCHAR(255) NOT NULL
 );
 
 #child table: 'songs' ISA 'media_types'
