@@ -6,7 +6,7 @@ import json
 import mysql.connector
 import pyodbc
 from ytmusicapi import YTMusic
-#yeah its doing something now 
+
 # Database configuration
 DB_HOST = 'XYZ'
 DB_USER = 'XYZ'
