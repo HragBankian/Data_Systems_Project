@@ -1,5 +1,3 @@
-use sys;
-
 #parent table
 CREATE TABLE media_types (
     media_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,7 +33,6 @@ CREATE TABLE available_markets (
         FOREIGN KEY (podcast_id) 
         REFERENCES podcasts(podcast_id)
 );
-
 
 #referential integrity using triggers for 'songs' table
 DELIMITER //
@@ -85,7 +82,6 @@ SELECT
 FROM
     podcasts;
     
-
 #-------------------------------------------------------- queries --------------------------------------------------------------
 
 #Basic select with simple where clause
@@ -113,7 +109,6 @@ SELECT *
 FROM podcasts
 JOIN available_markets
 ON podcasts.podcast_id = available_markets.podcast_id;
-
 
 #inner outer full joins 
 #inner
@@ -147,8 +142,6 @@ UNION
 SELECT *
 FROM podcasts
 RIGHT JOIN available_markets ON podcasts.podcast_id = available_markets.podcast_id;
-
-
 
 # A couple of examples to demonstrate correlated queries.
 # not sure if this is a seperate question or the title of the next couple steps
@@ -197,8 +190,6 @@ WHERE EXISTS (
 SELECT podcasts.podcast_id, podcast_name, publisher, overview, total_episodes, market_name
 FROM podcasts
 INNER JOIN available_markets ON podcasts.podcast_id = available_markets.podcast_id;
-
-
 
 # Union
 
