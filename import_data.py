@@ -7,10 +7,10 @@ import mysql.connector
 from ytmusicapi import YTMusic
 
 # Database configuration
-DB_HOST = '127.0.0.1'
-DB_USER = 'root'
-DB_PASSWORD = 'mhbank12'
-DB_DATABASE = 'medias'
+DB_HOST = 'XYZ'
+DB_USER = 'XYZ'
+DB_PASSWORD = 'XYZ'
+DB_DATABASE = 'XYZ'
 # Establish database connection
 conn = mysql.connector.connect(
     host=DB_HOST,
