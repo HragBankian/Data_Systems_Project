@@ -1,0 +1,158 @@
+------------------------------------------------------------------
+//DATA FILES AND SCRIPTS
+//in order to import data from the .csv files, one must ensure that the .csv files are found within the correct directory: .../relate-data/dbmss/.../import
+
+//create Media Type nodes
+LOAD CSV WITH HEADERS FROM 'file:///media_types.csv' AS row
+CREATE (:MediaType {
+	media_id: toInteger(row.media_id), 
+	media_type: row.media_type})
+
+//create Song nodes
+//establish IS_A relationship between Song and Media Type
+LOAD CSV WITH HEADERS FROM 'file:///songs.csv' AS row
+MATCH (media:MediaType {media_id: toInteger(row.song_id)})
+CREATE (song:Song {
+    song_id: toInteger(row.song_id),
+    song_name: row.song_name,
+    artist_name: row.artist_name,
+    album: row.album,
+    duration: toInteger(row.duration)})
+MERGE (song)-[:IS_A]->(media)
+
+//create Podcast nodes
+//establish IS_A relationship between Song and Media Type
+LOAD CSV WITH HEADERS FROM 'file:///podcasts.csv' AS row
+MATCH (media:MediaType {media_id: toInteger(row.podcast_id)})
+CREATE (podcast:Podcast {
+    podcast_id: toInteger(row.podcast_id),
+    podcast_name: row.podcast_name,
+    publisher: row.publisher,
+    overview: row.overview,
+    total_episodes: toInteger(row.total_episodes)})
+MERGE (podcast)-[:IS_A]->(media)
+
+//create Available_Markets nodes
+//establish AVAILABLE_IN relationship between Available_Markets and Podcast
+//we are only considering 1 available market per podcast as to avoid memory issues
+LOAD CSV WITH HEADERS FROM 'file:///available_markets.csv' AS row
+MATCH (podcast:Podcast {podcast_id: toInteger(row.podcast_id)})
+WHERE NOT EXISTS { (podcast)-[:AVAILABLE_IN]->() }
+CREATE (market:Market {name: row.market_name})
+CREATE (podcast)-[:AVAILABLE_IN]->(market)
+
+
+------------------------------------------------------------------
+//QUERIES
+
+
+// 1)
+// A basic search query on an attribute value
+MATCH (song:Song)
+WHERE song.song_name = 'Viva La Vida'
+RETURN song
+
+
+
+// 2)
+// A query that provides some aggregate data (i.e. number of entities satisfying a criteria)
+// here we choose to return the number of songs (aggregate) that satisfy the criteria (longer than 3 mins)
+MATCH (song:Song)
+WHERE song.duration > 180
+RETURN COUNT(song) AS longSongsCount
+
+
+
+
+// 3)
+// Find top n entities satisfying a criteria, sorted by an attribute.
+// so using the same filter as above, we find the 10 longest songs 
+MATCH (song:Song)
+WHERE song.duration > 180
+RETURN song
+ORDER BY song.duration DESC
+LIMIT 10
+
+
+
+
+// 4)
+// Simulate a relational group by query in NoSQL (aggregate per category).
+// In Cypher, GROUP BY is done implicitly by all of the aggregate functions. In a WITH/RETURN statement, any columns not part of an aggregate will be the 
+// GROUP BY key. Quote from stack overflow : https://stackoverflow.com/questions/52722671/how-to-make-group-by-in-a-cypher-query
+// so this groups artist to their number of songs 
+MATCH (song:Song)
+RETURN song.artist_name AS artist, COUNT(song) AS songCount
+
+
+
+
+// Build the appropriate indexes for previous queries, report the index creation statement
+// and the query execution time before and after you create the index.
+
+
+CREATE INDEX FOR (s:Song) ON (s.artist_name)
+
+CREATE INDEX FOR (s:Song) ON (s.duration)
+
+
+
+// 1 
+// 3 ms (index) compared to 8 ms (no index)
+
+MATCH (song:Song)
+USING INDEX song:Song(song_name)
+WHERE song.song_name = 'Viva La Vida'
+RETURN song
+
+
+
+// 2 
+// 2 ms (index) compared to 3 ms (no index)
+
+MATCH (song:Song)
+USING INDEX song:Song(duration)
+WHERE song.duration > 180
+RETURN COUNT(song) AS longSongsCount
+
+
+
+// 3
+// 4 ms (index) compared to 15 ms (no index)
+
+MATCH (song:Song)
+USING INDEX song:Song(duration)
+WHERE song.duration > 180
+RETURN song
+ORDER BY song.duration DESC
+LIMIT 10
+
+// 4
+// we can't use indexes for the 4th one as it gives an error, so say we tried this we'd get an error :
+
+MATCH (song:Song)
+USING INDEX song:Song(artist_name)
+RETURN song.artist_name AS artist, COUNT(song) AS songCount
+
+
+
+
+
+// Demonstrate a full text search. Show the performance improvement by using indexes.
+
+// this query finds all songs with the word 'the' without any indexes, time : 3 ms
+
+MATCH (song:Song)
+WHERE song.song_name CONTAINS 'the'
+RETURN song.song_name
+
+
+// same thing with indexes : we get it done in 1 ms
+
+MATCH (song:Song)
+USING INDEX song:Song(song_name)
+WHERE song.song_name CONTAINS 'love'
+RETURN song.song_name
+
+
+
