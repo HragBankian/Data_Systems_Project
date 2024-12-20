@@ -1,5 +1,5 @@
 # Data Systems Project
-Project completed in the context of SOEN 363.
+Project completed in the context of SOEN 363 using tools such as MySQL and Neo4j.
 ## Spotify API fetching
 https://www.youtube.com/watch?v=WAmEZBEeNmg
 
